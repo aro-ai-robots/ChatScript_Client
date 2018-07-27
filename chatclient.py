@@ -7,7 +7,7 @@ import socket
 import sys
 
 
-def sendAndReceiveChatScript(msgToSend, server='127.0.0.1', port=1024, timeout=10):
+def sendAndReceiveChatScript(msgToSend, server='127.0.0.', port=1024, timeout=10):
     try:
         # Connect, send, receive and close socket. Connections are not persistent
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     print("Hi " + user + ", enter ':quit' to end this session")
 
     while True:
-        s = input("[" + user + "]" + ">: ").lower().strip()
+        s = raw_input("[" + user + "]" + ">: ").lower().strip()
         if s == ':quit':
             break
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         # Send this to the server and print the response
         # Put in null terminations as required
         msg = u'%s\u0000%s\u0000%s\u0000' % (user, botname, s)
-        msg = str.encode(msg)
+        msg = msg.encode('ascii')
         resp = sendAndReceiveChatScript(msg, server=server, port=port)
         if resp is None:
             print("Error communicating with Chat Server")
